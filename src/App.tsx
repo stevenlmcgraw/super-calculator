@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Dispatch } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from './redux/reducers/rootReducer';
+import { CountActions } from './redux/actions/countActions';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+
+    const { count } = useSelector((state: AppState) => state.count);
+
+    const countDispatch = useDispatch<Dispatch<CountActions>>();
+
+    const handleIncrement = () => {
+        countDispatch({type: 'INCREMENT'});
+    }
+
+    const handleDecrement = () => {
+        countDispatch({type: 'DECREMENT'});
+    }
+
+    return (
+        <div>
+            <button onClick={handleIncrement}>+</button>
+            {count}
+            <button onClick={handleDecrement}>-</button>
+        </div>
+    );
 }
 
 export default App;
