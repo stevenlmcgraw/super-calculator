@@ -5,6 +5,8 @@ import { createMuiTheme } from "@material-ui/core/styles";
 const saturnHotdogJetBlack = "#363635";
 const saturnHotdogMint = "#AAFAC8";
 
+
+
 export default createMuiTheme({
     palette: {
         primary: {
@@ -17,4 +19,9 @@ export default createMuiTheme({
             primary: saturnHotdogMint
         }
     },
-})
+    typography: {
+        tab: {
+            textTransform: "none"
+        }
+    }
+});
