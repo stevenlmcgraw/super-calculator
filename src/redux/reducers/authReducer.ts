@@ -1,22 +1,17 @@
 import { authActions } from '../actions/authActions';
 
-export type LoginRequest = {
+type authState = {
     accessToken: string
     tokenType: string
 }
 
-type LoginRequestState = {
-    accessToken: string
-    tokenType: string
-}
-
-const initialState = {
+const initialState: authState = {
     accessToken: "",
     tokenType: ""
 }
 
-const loginRequestReducer = 
-(state: LoginRequestState = initialState, action: authActions) => {
+const authReducer = 
+(state: authState = initialState, action: authActions) => {
     switch(action.type) {
         case 'LOGIN_COMPLETE':
             return {
@@ -30,4 +25,4 @@ const loginRequestReducer =
     }
 }
 
-export default loginRequestReducer;
+export default authReducer;
