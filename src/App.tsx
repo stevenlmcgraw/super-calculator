@@ -27,8 +27,7 @@ const App = () => {
                 activeIndexValue={activeIndexValue}
                 setActiveIndexValue={setActiveIndexValue}
             />
-            <Switch>
-                
+            <Switch>                
                 <Route exact path="/physics" component={PhysicsLanding}/>
                 <Route path="/" component={Home}/>
             </Switch>

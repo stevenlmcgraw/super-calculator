@@ -1,15 +1,13 @@
-import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from '@material-ui/core/styles';
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -18,7 +16,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useStore } from 'react-redux';
 import { AppState } from '../../redux/reducers/rootReducer';
 import { useSelector } from 'react-redux';
 
@@ -85,15 +82,15 @@ const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: "transparent"
     }
   },
-  search: {
-    backgroundColor: theme.palette.secondary.main
-  },
   tab: {
     //...theme.typography.tab,
     minWidth: 10,
     marginLeft: '25px',
     textTransform: "none"
 
+  },
+  search: {
+    backgroundColor: theme.palette.secondary.main
   },
   tabContainer: {
     marginLeft: "auto"
@@ -111,10 +108,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 })
 );
 
-const Header = (props: any) => {
+const Header = ({ activeIndexValue, setActiveIndexValue }: any) => {
     const classes = useStyles();
     const theme = useTheme();
-    const store = useStore();
     const { formulas } = useSelector((state: AppState) => state.formulas);
     console.log('Inside header');
     console.log(formulas);
@@ -123,30 +119,30 @@ const Header = (props: any) => {
     const matches = useMediaQuery(theme.breakpoints.down("md"));
 
     const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-    const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
-    const [openMenu, setOpenMenu] = useState<boolean>(false);
+    // const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null);
+    // const [openMenu, setOpenMenu] = useState<boolean>(false);
 
-    const handleChange = (event: ChangeEvent<{}>, 
+    const handleChangeTab = (event: ChangeEvent<{}>, 
       newValue: number) => {
-          props.setActiveIndexValue(newValue);
+          setActiveIndexValue(newValue);
     };
   
-    const handleClick = (event: FormEvent<HTMLInputElement>) => {
-      setAnchorEl(event.currentTarget);
-      setOpenMenu(true);
-    };
+    // const handleClick = (event: FormEvent<HTMLInputElement>) => {
+    //   setAnchorEl(event.currentTarget);
+    //   setOpenMenu(true);
+    // };
   
-    const handleMenuItemClick = (event: FormEvent<HTMLInputElement>, 
-      index: number) => {
-      setAnchorEl(null);
-      setOpenMenu(false);
-      props.setSelectedIndex(index);
-    };
+    // const handleMenuItemClick = (event: FormEvent<HTMLInputElement>, 
+    //   index: number) => {
+    //   setAnchorEl(null);
+    //   setOpenMenu(false);
+    //   setActiveIndexValue(index);
+    // };
   
-    const handleClose = (event: FormEvent<HTMLInputElement>) => {
-      setAnchorEl(null);
-      setOpenMenu(false);
-    };
+    // const handleClose = (event: FormEvent<HTMLInputElement>) => {
+    //   setAnchorEl(null);
+    //   setOpenMenu(false);
+    // };
 
     const routes = [
       { name: "Home!", link: "/", activeIndex: 0 },
@@ -159,46 +155,47 @@ const Header = (props: any) => {
         name: "Login!",
         link: "/login",
         activeIndex: 2
-      },
+      }
     ];
 
-    const options = formulas.map((option: any) => {
-      const firstLetter = option.displayName[0].toUpperCase();
-      return {
-        firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
-        ...option,
-      };
-    });
+    // const options = formulas.map((option: any) => {
+    //   const firstLetter = option.displayName[0].toUpperCase();
+    //   return {
+    //     firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
+    //     ...option,
+    //   };
+    // });
 
-    const searchBar = (
-      
+    const searchBar = (        
         <Autocomplete
-          id="formula-search"
-          options={formulas.sort((a: any, b: any) => 
-            -b.displayName.localeCompare(a.displayName))}
-          groupBy={(option: any) => option.category}
-          getOptionLabel={(option: any) => option.displayName}
-          style={{ width: 300}}
-          renderInput={(params: any) => 
-            <TextField 
-              {...params} 
-              label="Search Me!"
-              className={classes.search}
-              color="secondary"
-              size="small"
-              variant="outlined" />}
-          />
-      
+            id="formula-search"
+            options={formulas.sort((a: any, b: any) => 
+                -b.displayName.localeCompare(a.displayName))}
+            groupBy={(option: any) => option.category}
+            getOptionLabel={(option: any) => option.displayName}
+            style={{width: 300}}
+            renderInput={(params: any) => 
+                <TextField 
+                    {...params} 
+                    label="Search Me!"
+                    className={classes.search}
+                    color="secondary"
+                    size="small"
+                    variant="outlined" 
+                />
+            }
+        />      
     );
 
-    const tabs = (
-      <>
+    // value refers the index of which tab will be highlighted
+    const tabs = (      
         <Tabs
-          value={props.activeIndexValue}
-          onChange={handleChange}
+          value={activeIndexValue}
+          onChange={handleChangeTab}
           className={classes.tabContainer}
           indicatorColor="primary"
-          >
+        >
+            
             {routes.map((route, index) => (
               <Tab
                 key={`${route}${index}`}
@@ -207,10 +204,9 @@ const Header = (props: any) => {
                 to={route.link}
                 label={route.name}
               />
-            ))}
-            {searchBar}
-        </Tabs>
-      </>
+            ))}                  
+                            
+        </Tabs>   
     );
 
     const drawer = (
@@ -231,11 +227,11 @@ const Header = (props: any) => {
                 button
                 component={Link}
                 to={route.link}
-                selected={props.activeIndexValue === route.activeIndex}
+                selected={activeIndexValue === route.activeIndex}
                 classes={{ selected: classes.drawerItemSelected }}
                 onClick={() => {
                   setOpenDrawer(false);
-                  props.setActiveIndexValue(route.activeIndex);
+                  setActiveIndexValue(route.activeIndex);
                 }}
               >
                 <ListItemText className={classes.drawerItem} disableTypography>
@@ -259,32 +255,31 @@ const Header = (props: any) => {
       [...routes].forEach(route => {
         switch (window.location.pathname) {
           case `${route.link}`:
-            if(props.activeIndexValue !== route.activeIndex) {
-              props.setActiveIndexValue(route.activeIndex);
+            if(activeIndexValue !== route.activeIndex) {
+              setActiveIndexValue(route.activeIndex);
             }
             break;
         }
       });
-    }, [props.activeIndexValue, routes, props, formulas]);
+    }, [activeIndexValue, setActiveIndexValue, routes, formulas]);
 
         
 
-    return (
-        <>
-            <AppBar position="fixed">
-                <Toolbar>
-                    <Button
-                        component={Link}
-                        to="/"
-                        disableRipple
-                        className={classes.logoContainer}
-                        >
-                        Saturn Hotdog Super Calculator
-                    </Button>
-                    {matches ? drawer : tabs}
-                </Toolbar>
-            </AppBar>
-        </>
+    return (    
+        <AppBar position="fixed">
+            <Toolbar>
+                <Button
+                    component={Link}
+                    to="/"
+                    disableRipple
+                    className={classes.logoContainer}
+                    >
+                    Saturn Hotdog Super Calculator
+                </Button>
+                {matches ? drawer : tabs}
+                {searchBar}
+            </Toolbar>
+        </AppBar>
     );
 }
 
