@@ -1,4 +1,4 @@
-import { LoginRequestActions } from '../actions/loginRequestActions';
+import { authActions } from '../actions/authActions';
 
 export type LoginRequest = {
     accessToken: string
@@ -16,7 +16,7 @@ const initialState = {
 }
 
 const loginRequestReducer = 
-(state: LoginRequestState = initialState, action: LoginRequestActions) => {
+(state: LoginRequestState = initialState, action: authActions) => {
     switch(action.type) {
         case 'LOGIN_COMPLETE':
             return {

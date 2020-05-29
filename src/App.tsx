@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,10 +16,9 @@ const App = () => {
 
     const dispatch = useDispatch();
 
-    const [activeIndexValue, setActiveIndexValue] = useState<number>(0);
-
     const { formulas } = useSelector((state: AppState) => state.formulas);
-    
+    // just so formulas isn't an unused variable for now
+    console.log(formulas);
 
     useEffect(() => {
         dispatch(fetchFormulaList());
@@ -27,10 +26,7 @@ const App = () => {
 
     return (
         <div>
-            <Header 
-                activeIndexValue={activeIndexValue}
-                setActiveIndexValue={setActiveIndexValue}
-            />
+            <Header/>
             <Switch>    
                 <Route exact path="/login" component={Login}/>            
                 <Route exact path="/physics" component={PhysicsLanding}/>

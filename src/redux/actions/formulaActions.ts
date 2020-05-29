@@ -4,8 +4,8 @@ import { ActionCreator } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import {Formula} from '../reducers/formulaReducer';
 
-const LOCAL_API_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:9191';
-//const CLOUD_API_URL = 'http://saturn-hotdog-super-calculator-backend.cfapps.io';
+// const LOCAL_API_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:9191';
+const CLOUD_API_URL = 'http://saturn-hotdog-super-calculator-backend.cfapps.io';
 
 interface IFetchFormulas {
     readonly type: 'FETCH_FORMULAS';
@@ -17,7 +17,7 @@ interface IFetchedFormulas {
 }
 
 const apiClient = axios.create({
-    baseURL: LOCAL_API_URL,
+    baseURL: CLOUD_API_URL,
     responseType: 'json',
     headers: {
       'Content-Type': 'application/json'
