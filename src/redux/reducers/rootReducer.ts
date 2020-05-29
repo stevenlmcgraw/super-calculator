@@ -1,11 +1,10 @@
 import { combineReducers } from 'redux'
 import formulaReducer from './formulaReducer';
-import loginRequestReducer from './loginRequestReducer';
+import authReducer from './authReducer';
 
 const rootReducer = combineReducers({
     formulas: formulaReducer,
-    accessToken: loginRequestReducer,
-    tokenType: loginRequestReducer
+    auth: authReducer,
 })
 
 export type AppState = ReturnType<typeof rootReducer>
