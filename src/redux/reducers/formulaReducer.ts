@@ -35,7 +35,7 @@ const initialState: FormulaState = {
 
 const formulaReducer = (state: FormulaState = initialState, action: FormulaActions) => {
     switch(action.type) {
-        case 'FETCH_FORMULAS':
+        case 'FETCHED_FORMULAS':
             return {
                 ...state,
                 formulas: action.payload._embedded.formulas,
