@@ -85,15 +85,15 @@ const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: "transparent"
     }
   },
+  search: {
+    backgroundColor: theme.palette.secondary.main
+  },
   tab: {
     //...theme.typography.tab,
     minWidth: 10,
     marginLeft: '25px',
     textTransform: "none"
 
-  },
-  search: {
-    backgroundColor: theme.palette.secondary.main
   },
   tabContainer: {
     marginLeft: "auto"
@@ -171,7 +171,7 @@ const Header = (props: any) => {
     });
 
     const searchBar = (
-      <>
+      
         <Autocomplete
           id="formula-search"
           options={formulas.sort((a: any, b: any) => 
@@ -188,13 +188,13 @@ const Header = (props: any) => {
               size="small"
               variant="outlined" />}
           />
-      </>
+      
     );
 
     const tabs = (
       <>
         <Tabs
-          value={props.value}
+          value={props.activeIndexValue}
           onChange={handleChange}
           className={classes.tabContainer}
           indicatorColor="primary"
@@ -231,7 +231,7 @@ const Header = (props: any) => {
                 button
                 component={Link}
                 to={route.link}
-                selected={props.value === route.activeIndex}
+                selected={props.activeIndexValue === route.activeIndex}
                 classes={{ selected: classes.drawerItemSelected }}
                 onClick={() => {
                   setOpenDrawer(false);
@@ -259,7 +259,7 @@ const Header = (props: any) => {
       [...routes].forEach(route => {
         switch (window.location.pathname) {
           case `${route.link}`:
-            if(props.value !== route.activeIndex) {
+            if(props.activeIndexValue !== route.activeIndex) {
               props.setActiveIndexValue(route.activeIndex);
             }
             break;
