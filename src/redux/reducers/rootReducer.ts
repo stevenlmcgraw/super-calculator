@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux'
-import countReducer from './countReducer'
-import nameReducer from './nameReducer';
+import formulaReducer from './formulaReducer';
 
 const rootReducer = combineReducers({
-    count: countReducer,
-    name: nameReducer,
+    formulas: formulaReducer
 })
 
 export type AppState = ReturnType<typeof rootReducer>

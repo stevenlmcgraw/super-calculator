@@ -1,27 +1,35 @@
-import React, { Dispatch } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, Dispatch } from 'react';
+import { Route, Switch } from "react-router-dom";
+import Header from './components/Header/Header';
+import Home from './pages/Home';
+import PhysicsLanding from './pages/Physics';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchFormulaList, FormulaActions } from './redux/actions/formulaActions';
 import { AppState } from './redux/reducers/rootReducer';
-import { CountActions } from './redux/actions/countActions';
+
 
 const App = () => {
 
-    const { count } = useSelector((state: AppState) => state.count);
+    //const formulaDispatch = useDispatch<Dispatch<FormulaActions>>();
+    const formulaDispatch = useDispatch();
 
-    const countDispatch = useDispatch<Dispatch<CountActions>>();
+    const { formulas } = useSelector((state: AppState) => state.formulas);
 
-    const handleIncrement = () => {
-        countDispatch({type: 'INCREMENT'});
-    }
-
-    const handleDecrement = () => {
-        countDispatch({type: 'DECREMENT'});
-    }
+    useEffect(() => {
+        formulaDispatch(fetchFormulaList);
+        console.log('In useEffect')
+        console.log(formulaDispatch)
+    }, []);
 
     return (
         <div>
-            <button onClick={handleIncrement}>+</button>
-            {count}
-            <button onClick={handleDecrement}>-</button>
+            <Header />
+            <Switch>
+                
+                <Route exact path="/physics" component={PhysicsLanding}/>
+                <Route path="/" component={Home}/>
+            </Switch>
+
         </div>
     );
 }
