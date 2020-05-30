@@ -42,6 +42,7 @@ const Header = () => {
                     component={Link}
                     to="/"
                     disableRipple
+                    onClick={() => setActiveIndexValue(0)}
                     className={classes.logoContainer}
                     >
                     Saturn Hotdog Super Calculator

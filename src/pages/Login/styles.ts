@@ -4,7 +4,9 @@ import { makeStyles, Theme } from "@material-ui/core";
 export const useStyles = makeStyles((theme: Theme) => ({
     button: {
     justifyContent: 'center',
-    height: '45px',
+    height: '3.5rem',
+    width: '20rem',
+    minWidth: '12rem',
     "&:hover": {
       backgroundColor: theme.palette.secondary.dark
     }
@@ -15,11 +17,18 @@ export const useStyles = makeStyles((theme: Theme) => ({
         margin: `${theme.spacing(0)} auto`,
         marginTop: '10em'
     },
+    gridItem: {
+        margin: '1em'
+    },
     input: {
         color: theme.palette.primary.main
     },
     loginCard: {
         backgroundColor: 'white'
+    },
+    textField: {
+        width: '20rem',
+        minWidth: '12rem'
     },
     title: {
         fontSize: 20,

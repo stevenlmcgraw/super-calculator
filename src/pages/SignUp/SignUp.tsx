@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent, SyntheticEvent } from 'react';
-import { Card, TextField, Grid, CardContent, Typography } from '@material-ui/core';
+import { Card, Link, TextField, Grid, CardContent, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -9,11 +9,13 @@ import EmailIcon from '@material-ui/icons/Email';
 import LockIcon from '@material-ui/icons/Lock';
 import useStyles from './styles';
 
+import ShowPasswordIconButton from '../../components/Buttons';
+import useDebounce from '../../utilities/hooks';
 import { 
     checkUsernameAvailability, 
     checkEmailAvailability, 
     registerNewSiteUser } 
-from '../../utilities';
+from '../../utilities/api';
 
 function Alert(props: AlertProps) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -30,12 +32,17 @@ const SignUp = () => {
     const [submitButtonDisabled, setSubmitButtonDisabled] = useState<boolean>(true);
     const [badUsername, setBadUsername] = useState<boolean>(true);
     const [badEmail, setBadEmail] = useState<boolean>(true);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+
+    const DEBOUNCE_TIMEOUT = 750;
+    const debouncedUsername = useDebounce(username, DEBOUNCE_TIMEOUT);
+    const debouncedEmail = useDebounce(email, DEBOUNCE_TIMEOUT);
 
     const requestBody = {
         username,
         email,
         password
-    }
+    };
 
     const handleSubmit = (event: FormEvent<{}>) => {
         registerNewSiteUser(requestBody)
@@ -55,7 +62,7 @@ const SignUp = () => {
                 console.log(error)
             }
         })
-    }
+    };
 
     const handleCheckUsername = (username: string | null) => {
         console.log(username);
@@ -99,19 +106,21 @@ const SignUp = () => {
         setOpen(false);
     };
 
+    const toggleShowPassword = () => {
 
-
-    useEffect(() => {
-        if(username) {
-            handleCheckUsername(username);
-        }
-    }, [username]);
+    }
 
     useEffect(() => {
-        if(email) {
-            handleCheckEmail(email);
+        if(debouncedUsername) {
+            handleCheckUsername(debouncedUsername);
         }
-    }, [email]);
+    }, [debouncedUsername]);
+
+    useEffect(() => {
+        if(debouncedEmail) {
+            handleCheckEmail(debouncedEmail);
+        }
+    }, [debouncedEmail]);
 
     useEffect(() => {
         const toggleSubmitDisabled = () => {
@@ -134,12 +143,12 @@ const SignUp = () => {
             <Card variant="outlined" className={classes.loginCard}>
                 <CardContent>
                 <Grid container justify="center" direction="column">
-                <Grid item>
+                <Grid item className={classes.gridItem}>
                         <Typography className={classes.title} gutterBottom>
                             Sign Up!
                         </Typography>
                     </Grid>
-                    <Grid item>
+                    <Grid item className={classes.gridItem}>
                         <TextField
                             required
                             id="username"
@@ -148,6 +157,7 @@ const SignUp = () => {
                             placeholder="Username"
                             variant="outlined"
                             onChange={event => {setUsername(event.target.value)}}
+                            className={classes.textField}
                             InputProps={{
                                 className: classes.input,
                                 startAdornment: (
@@ -162,7 +172,7 @@ const SignUp = () => {
                               }}
                             />
                     </Grid>
-                    <Grid item>
+                    <Grid item className={classes.gridItem}>
                         <TextField 
                             required
                             id="email"
@@ -173,6 +183,7 @@ const SignUp = () => {
                             variant="outlined"
                             color="primary"
                             onChange={event => {setEmail(event.target.value)}}
+                            className={classes.textField}
                             InputProps={{
                                 className: classes.input,
                                 startAdornment: (
@@ -183,17 +194,18 @@ const SignUp = () => {
                               }}
                             />
                     </Grid>
-                    <Grid item>
+                    <Grid item className={classes.gridItem}>
                         <TextField 
                             required
                             id="password"
                             name="password"
                             label="Password" 
                             placeholder="Password" 
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             variant="outlined"
                             color="primary"
                             onChange={event => {setPassword(event.target.value)}}
+                            className={classes.textField}
                             InputProps={{
                                 className: classes.input,
                                 startAdornment: (
@@ -201,11 +213,16 @@ const SignUp = () => {
                                     <LockIcon />
                                   </InputAdornment>
                                 ),
+                                endAdornment: (
+                                    <ShowPasswordIconButton 
+                                        showPassword={showPassword}
+                                        setShowPassword={setShowPassword}
+                                    />
+                                )
                               }}
                             />
                     </Grid>
-                    
-                    <Grid item>
+                    <Grid item className={classes.gridItem}>
                         <Button
                             disabled={submitButtonDisabled}
                             className={classes.button}
@@ -215,6 +232,18 @@ const SignUp = () => {
                             >
                                 Sign Me Up!
                         </Button>
+                    </Grid>
+                    <Grid container direction="column" justify="center" alignItems="center">
+                    <Grid item >
+                        <Typography variant="subtitle1" color="primary">
+                            Already signed-up?
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography>
+                        <Link href="/login" color="secondary"> Click right he-yump!</Link>
+                        </Typography>
+                    </Grid>
                     </Grid>
                 </Grid>
                 </CardContent>
