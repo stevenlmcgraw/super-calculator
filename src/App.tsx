@@ -7,6 +7,7 @@ import Header from './components/Header/Header';
 import Home from './pages/Home';
 import PhysicsLanding from './pages/Physics';
 import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 
 import { fetchFormulaList } from './redux/actions/formulaActions';
 import { AppState } from './redux/reducers/rootReducer';
@@ -28,7 +29,8 @@ const App = () => {
         <div>
             <Header/>
             <Switch>    
-                <Route exact path="/login" component={Login}/>            
+                <Route exact path="/login" component={Login}/>
+                <Route exact path="/signup" component={SignUp}/>        
                 <Route exact path="/physics" component={PhysicsLanding}/>
                 <Route path="/" component={Home}/>
             </Switch>

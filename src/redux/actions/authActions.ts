@@ -8,7 +8,7 @@ export type LoginRequest = {
     tokenType: string
 }
 
-// const LOCAL_API_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:9191';
+//const LOCAL_API_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:9191';
 const CLOUD_API_URL = 'http://saturn-hotdog-super-calculator-backend.cfapps.io';
 
 interface ILoginSubmit {
