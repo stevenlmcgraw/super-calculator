@@ -1,16 +1,13 @@
 import React, { useState, useEffect, FormEvent, SyntheticEvent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { Input, Card, TextField, Grid, CardContent, Typography } from '@material-ui/core';
+import { Card, TextField, Grid, CardContent, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { useTheme } from '@material-ui/core/styles';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EmailIcon from '@material-ui/icons/Email';
 import LockIcon from '@material-ui/icons/Lock';
+import useStyles from './styles';
 
 import { 
     checkUsernameAvailability, 
@@ -20,34 +17,7 @@ from '../../utilities';
 
 function Alert(props: AlertProps) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
-
-const useStyles = makeStyles((theme: Theme) => ({
-    button: {
-    justifyContent: 'center',
-    height: '45px',
-    "&:hover": {
-      backgroundColor: theme.palette.secondary.dark
-    }
-    },
-    cardContainer: {
-        position: 'absolute',
-        display: "flex",
-        margin: `${theme.spacing(0)} auto`,
-        marginTop: '10em'
-    },
-    input: {
-        color: theme.palette.primary.main
-    },
-    loginCard: {
-        backgroundColor: 'white'
-    },
-    title: {
-        fontSize: 20,
-        textAlign: 'center',
-        color: theme.palette.primary.main
-    }
-}));
+}
 
 const SignUp = () => {
     const classes = useStyles();
@@ -129,24 +99,29 @@ const SignUp = () => {
         setOpen(false);
     };
 
-    const toggleSubmitDisabled = () => {
-        if(!badUsername && !badEmail) {
-            setSubmitButtonDisabled(false);
-        }
-        else {
-            setSubmitButtonDisabled(true);
-        }
-    };
+
 
     useEffect(() => {
-        handleCheckUsername(username);
+        if(username) {
+            handleCheckUsername(username);
+        }
     }, [username]);
 
     useEffect(() => {
-        handleCheckEmail(email);
+        if(email) {
+            handleCheckEmail(email);
+        }
     }, [email]);
 
     useEffect(() => {
+        const toggleSubmitDisabled = () => {
+            if(!badUsername && !badEmail) {
+                setSubmitButtonDisabled(false);
+            }
+            else {
+                setSubmitButtonDisabled(true);
+            }
+        };
         toggleSubmitDisabled();
     }, [badUsername, badEmail]);
 
