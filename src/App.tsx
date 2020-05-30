@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+
 import Header from './components/Header/Header';
+
 import Home from './pages/Home';
 import PhysicsLanding from './pages/Physics';
-import { useDispatch, useSelector } from 'react-redux';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
+
 import { fetchFormulaList } from './redux/actions/formulaActions';
 import { AppState } from './redux/reducers/rootReducer';
 
@@ -12,9 +17,8 @@ const App = () => {
 
     const dispatch = useDispatch();
 
-    const [activeIndexValue, setActiveIndexValue] = useState<number>(0);
-
     const { formulas } = useSelector((state: AppState) => state.formulas);
+    // just so formulas isn't an unused variable for now
     console.log(formulas);
 
     useEffect(() => {
@@ -23,11 +27,10 @@ const App = () => {
 
     return (
         <div>
-            <Header 
-                activeIndexValue={activeIndexValue}
-                setActiveIndexValue={setActiveIndexValue}
-            />
-            <Switch>                
+            <Header/>
+            <Switch>    
+                <Route exact path="/login" component={Login}/>
+                <Route exact path="/signup" component={SignUp}/>        
                 <Route exact path="/physics" component={PhysicsLanding}/>
                 <Route path="/" component={Home}/>
             </Switch>
